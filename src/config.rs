@@ -8,7 +8,9 @@ use std::env;
 use std::ffi::OsString;
 use std::path::PathBuf;
 
+// 获取path 路径的目录
 pub fn data_dir() -> Result<PathBuf> {
+    // 获取环境变量
     let path = match env::var_os("_ZO_DATA_DIR") {
         Some(path) => PathBuf::from(path),
         None => match dirs::data_local_dir() {
@@ -20,6 +22,7 @@ pub fn data_dir() -> Result<PathBuf> {
         },
     };
 
+    // 返回path
     Ok(path)
 }
 
@@ -41,7 +44,9 @@ pub fn exclude_dirs() -> Result<Vec<Pattern>> {
             .collect(),
         None => {
             let pattern = (|| {
+                // 获取home 目录
                 let home = dirs::home_dir()?;
+                // home目录
                 let home = home.to_str()?;
                 let home = Pattern::escape(home);
                 Pattern::new(&home).ok()

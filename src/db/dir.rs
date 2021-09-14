@@ -20,10 +20,12 @@ impl DirList<'_> {
         // Assume a maximum size for the database. This prevents bincode from
         // throwing strange errors when it encounters invalid data.
         const MAX_SIZE: u64 = 32 << 20; // 32 MiB
+        // 反序列化
         let deserializer = &mut bincode::options().with_fixint_encoding().with_limit(MAX_SIZE);
 
         // Split bytes into sections.
         let version_size = deserializer.serialized_size(&Self::VERSION).unwrap() as _;
+        // 内容长度不够
         if bytes.len() < version_size {
             bail!("could not deserialize database: corrupted data");
         }
@@ -33,6 +35,7 @@ impl DirList<'_> {
         (|| {
             let version = deserializer.deserialize(bytes_version)?;
             match version {
+                // 返回目录信息
                 Self::VERSION => Ok(deserializer.deserialize(bytes_dirs)?),
                 version => {
                     bail!("unsupported version (got {}, supports {})", version, Self::VERSION,)
@@ -59,10 +62,12 @@ impl DirList<'_> {
     }
 }
 
+// 实现解引用
 impl<'a> Deref for DirList<'a> {
     type Target = Vec<Dir<'a>>;
 
     fn deref(&self) -> &Self::Target {
+        // 返回可读引用
         &self.0
     }
 }
@@ -88,6 +93,7 @@ pub struct Dir<'a> {
 }
 
 impl Dir<'_> {
+    // 获取每个目录的得分
     pub fn score(&self, now: Epoch) -> Rank {
         const HOUR: Epoch = 60 * 60;
         const DAY: Epoch = 24 * HOUR;
@@ -95,6 +101,7 @@ impl Dir<'_> {
 
         // The older the entry, the lesser its importance.
         let duration = now.saturating_sub(self.last_accessed);
+        // 在一个小时内访问，排名靠前
         if duration < HOUR {
             self.rank * 4.0
         } else if duration < DAY {

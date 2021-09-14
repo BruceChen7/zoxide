@@ -7,6 +7,7 @@ use anyhow::{bail, Result};
 
 use std::path::Path;
 
+// 实现结构体方法
 impl Run for Add {
     fn run(&self) -> Result<()> {
         // These characters can't be printed cleanly to a single line, so they
@@ -15,7 +16,7 @@ impl Run for Add {
 
         let data_dir = config::data_dir()?;
         let exclude_dirs = config::exclude_dirs()?;
-        let max_age = config::maxage()?;
+        let max_age = config::maxage()?; // ？遇到错误立刻返回
         let now = util::current_time()?;
 
         let mut db = DatabaseFile::new(data_dir);

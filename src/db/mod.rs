@@ -13,13 +13,16 @@ use std::path::{Path, PathBuf};
 
 #[derive(Debug)]
 pub struct Database<'file> {
+    // 目录列表
     pub dirs: DirList<'file>,
+    // 是否修改
     pub modified: bool,
     pub data_dir: &'file Path,
 }
 
 impl<'file> Database<'file> {
     pub fn save(&mut self) -> Result<()> {
+        // 没有修改，直接返回
         if !self.modified {
             return Ok(());
         }
@@ -41,6 +44,7 @@ impl<'file> Database<'file> {
         persist(file, &path)
             .with_context(|| format!("could not replace database: {}", path.display()))?;
 
+        // reset
         self.modified = false;
         Ok(())
     }
@@ -157,13 +161,16 @@ fn persist<P: AsRef<Path>>(mut file: NamedTempFile, path: P) -> Result<(), Persi
 }
 
 #[cfg(unix)]
+//持久化数据
 fn persist<P: AsRef<Path>>(file: NamedTempFile, path: P) -> Result<(), PersistError> {
+    // 落文件
     file.persist(path)?;
     Ok(())
 }
 
 pub struct DatabaseFile {
     buffer: Vec<u8>,
+    // An owned, mutable path
     data_dir: PathBuf,
 }
 
@@ -179,6 +186,7 @@ impl DatabaseFile {
         let path = db_path(&self.data_dir);
         match fs::read(&path) {
             Ok(buffer) => {
+                // 用来获取文件内容
                 self.buffer = buffer;
                 let dirs = DirList::from_bytes(&self.buffer).with_context(|| {
                     format!("could not deserialize database: {}", path.display())

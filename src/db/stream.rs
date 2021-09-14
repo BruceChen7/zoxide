@@ -31,6 +31,7 @@ impl<'db, 'file> Stream<'db, 'file> {
         // it from the database.
         let expire_below = now.saturating_sub(90 * 24 * 60 * 60);
 
+        // 返回一个心的stream
         Stream {
             db,
             idxs,

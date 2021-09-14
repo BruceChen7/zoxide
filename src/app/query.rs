@@ -61,6 +61,7 @@ impl Query {
             if self.score {
                 writeln!(io::stdout(), "{}", dir.display_score(now))
             } else {
+                // 打印到终端列表
                 writeln!(io::stdout(), "{}", dir.display())
             }
             .pipe_exit("stdout")?;
