@@ -27,8 +27,10 @@ impl DirList<'_> {
         let version_size = deserializer.serialized_size(&Self::VERSION).unwrap() as _;
         // 内容长度不够
         if bytes.len() < version_size {
+            // 提前返回Error
             bail!("could not deserialize database: corrupted data");
         }
+        // 前面是version，后面是
         let (bytes_version, bytes_dirs) = bytes.split_at(version_size);
 
         // Deserialize sections.
@@ -36,7 +38,9 @@ impl DirList<'_> {
             let version = deserializer.deserialize(bytes_version)?;
             match version {
                 // 返回目录信息
+                // 静态变量
                 Self::VERSION => Ok(deserializer.deserialize(bytes_dirs)?),
+                // 其他
                 version => {
                     bail!("unsupported version (got {}, supports {})", version, Self::VERSION,)
                 }
@@ -45,15 +49,18 @@ impl DirList<'_> {
         .context("could not deserialize database")
     }
 
+    // 返回多个字节，序列化
     pub fn to_bytes(&self) -> Result<Vec<u8>> {
         (|| -> bincode::Result<_> {
             // Preallocate buffer with combined size of sections.
             let version_size = bincode::serialized_size(&Self::VERSION)?;
             let dirs_size = bincode::serialized_size(&self)?;
             let buffer_size = version_size + dirs_size;
+            // 创建buffer
             let mut buffer = Vec::with_capacity(buffer_size as _);
 
             // Serialize sections into buffer.
+            // 序列化到buffer
             bincode::serialize_into(&mut buffer, &Self::VERSION)?;
             bincode::serialize_into(&mut buffer, &self)?;
             Ok(buffer)
@@ -62,16 +69,18 @@ impl DirList<'_> {
     }
 }
 
-// 实现解引用
+// 实现解引用 trait
 impl<'a> Deref for DirList<'a> {
     type Target = Vec<Dir<'a>>;
 
+    // 静态类型
     fn deref(&self) -> &Self::Target {
         // 返回可读引用
         &self.0
     }
 }
 
+// 实现DerefMut
 impl<'a> DerefMut for DirList<'a> {
     fn deref_mut(&mut self) -> &mut Self::Target {
         &mut self.0
@@ -126,8 +135,10 @@ pub struct DirDisplay<'a> {
     dir: &'a Dir<'a>,
 }
 
+// 返回Display trait
 impl Display for DirDisplay<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        // 写下当前的路径
         write!(f, "{}", self.dir.path)
     }
 }
