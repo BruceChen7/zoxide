@@ -12,10 +12,12 @@ pub fn canonicalize<P: AsRef<Path>>(path: &P) -> Result<PathBuf> {
 }
 
 pub fn current_dir() -> Result<PathBuf> {
+    // 当前目录
     env::current_dir().context("could not get current directory")
 }
 
 pub fn current_time() -> Result<Epoch> {
+    // 获取当前时间
     let current_time = SystemTime::now()
         .duration_since(SystemTime::UNIX_EPOCH)
         .context("system clock set to invalid time")?
@@ -35,6 +37,7 @@ pub fn path_to_str<P: AsRef<Path>>(path: &P) -> Result<&str> {
 /// character.
 /// If path is relative, use the current directory to build the absolute path.
 pub fn resolve_path<P: AsRef<Path>>(path: &P) -> Result<PathBuf> {
+    // 获取读引用
     let path = path.as_ref();
     let base_path;
 
@@ -42,7 +45,7 @@ pub fn resolve_path<P: AsRef<Path>>(path: &P) -> Result<PathBuf> {
     let mut stack = Vec::new();
 
     // initialize root
-    if cfg!(windows) {
+    if cfg!(windows) { // 条件编译
         use std::path::Prefix;
 
         fn get_drive_letter<P: AsRef<Path>>(path: P) -> Option<u8> {
@@ -124,6 +127,7 @@ pub fn resolve_path<P: AsRef<Path>>(path: &P) -> Result<PathBuf> {
         match components.peek() {
             Some(Component::RootDir) => {
                 let root = components.next().unwrap();
+                // 获取根节点
                 stack.push(root);
             }
             _ => {
@@ -151,6 +155,7 @@ pub fn resolve_path<P: AsRef<Path>>(path: &P) -> Result<PathBuf> {
 
 // Convert a string to lowercase, with a fast path for ASCII strings.
 pub fn to_lowercase<S: AsRef<str>>(s: S) -> String {
+    // 读引用
     let s = s.as_ref();
     if s.is_ascii() {
         s.to_ascii_lowercase()

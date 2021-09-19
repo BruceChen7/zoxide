@@ -22,6 +22,7 @@ const ENV_HELP: &str = "ENVIRONMENT VARIABLES:
     global_setting(AppSettings::PropagateVersion),
     version = option_env!("ZOXIDE_VERSION").unwrap_or_default()
 )]
+// 是一个枚举
 pub enum App {
     Add(Add),
     Import(Import),
@@ -133,5 +134,6 @@ pub struct Remove {
         required_unless_present = "interactive",
         value_hint = ValueHint::DirPath
     )]
+    // 路径
     pub paths: Vec<String>,
 }

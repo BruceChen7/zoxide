@@ -184,6 +184,7 @@ impl DatabaseFile {
         // faster than mmap / streaming, and allows for zero-copy
         // deserialization.
         let path = db_path(&self.data_dir);
+        // 读去path
         match fs::read(&path) {
             Ok(buffer) => {
                 // 用来获取文件内容

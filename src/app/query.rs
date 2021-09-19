@@ -18,6 +18,7 @@ impl Run for Query {
     }
 }
 
+// 执行查询操作
 impl Query {
     fn query(&self, db: &mut Database) -> Result<()> {
         let now = util::current_time()?;

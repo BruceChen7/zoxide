@@ -27,6 +27,7 @@ pub fn data_dir() -> Result<PathBuf> {
 }
 
 pub fn echo() -> bool {
+    // 获取当前进程的环境变量
     match env::var_os("_ZO_ECHO") {
         Some(var) => var == "1",
         None => false,
@@ -38,6 +39,7 @@ pub fn exclude_dirs() -> Result<Vec<Pattern>> {
         Some(paths) => env::split_paths(&paths)
             .map(|path| {
                 let pattern = path.to_str().context("invalid unicode in _ZO_EXCLUDE_DIRS")?;
+                // 支持pattern模式
                 Pattern::new(pattern)
                     .with_context(|| format!("invalid glob in _ZO_EXCLUDE_DIRS: {}", pattern))
             })
@@ -57,6 +59,7 @@ pub fn exclude_dirs() -> Result<Vec<Pattern>> {
 }
 
 pub fn fzf_opts() -> Option<OsString> {
+    // 获取
     env::var_os("_ZO_FZF_OPTS")
 }
 

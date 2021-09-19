@@ -20,6 +20,8 @@ pub fn main() {
     env::remove_var("RUST_LIB_BACKTRACE");
     env::remove_var("RUST_BACKTRACE");
 
+    // 执行run的trait
+    // 这个是程序的入口
     if let Err(e) = App::parse().run() {
         match e.downcast::<SilentExit>() {
             Ok(SilentExit { code }) => process::exit(code),

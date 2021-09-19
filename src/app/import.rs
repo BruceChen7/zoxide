@@ -12,13 +12,17 @@ impl Run for Import {
             format!("could not open database for importing: {}", &self.path.display())
         })?;
 
+        // 获取目录
         let data_dir = config::data_dir()?;
+        // 创建db文件
         let mut db = DatabaseFile::new(data_dir);
         let db = &mut db.open()?;
+        // 目录不能合并
         if !self.merge && !db.dirs.is_empty() {
             bail!("current database is not empty, specify --merge to continue anyway");
         }
 
+        // 获取相关文件
         match self.from {
             ImportFrom::Autojump => from_autojump(db, &buffer),
             ImportFrom::Z => from_z(db, &buffer),
@@ -31,6 +35,7 @@ impl Run for Import {
 
 fn from_autojump<'a>(db: &mut Database<'a>, buffer: &'a str) -> Result<()> {
     for line in buffer.lines() {
+        // 为空
         if line.is_empty() {
             continue;
         }

@@ -13,6 +13,7 @@ pub trait Run {
     fn run(&self) -> Result<()>;
 }
 
+// 运行
 impl Run for App {
     fn run(&self) -> Result<()> {
         match self {
