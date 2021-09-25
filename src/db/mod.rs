@@ -66,8 +66,10 @@ impl<'file> Database<'file> {
         self.modified = true;
     }
 
+    // 删除重复的路径
     pub fn dedup(&mut self) {
         // Sort by path, so that equal paths are next to each other.
+        // 根据path来排序
         self.dirs.sort_by(|dir1, dir2| dir1.path.cmp(&dir2.path));
 
         for idx in (1..self.dirs.len()).rev() {

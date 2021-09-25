@@ -16,19 +16,21 @@ impl Run for Import {
         let data_dir = config::data_dir()?;
         // 创建db文件
         let mut db = DatabaseFile::new(data_dir);
+        // 可变引用
         let db = &mut db.open()?;
         // 目录不能合并
         if !self.merge && !db.dirs.is_empty() {
             bail!("current database is not empty, specify --merge to continue anyway");
         }
 
-        // 获取相关文件
+        // 不同的输入文件倒入
         match self.from {
             ImportFrom::Autojump => from_autojump(db, &buffer),
             ImportFrom::Z => from_z(db, &buffer),
         }
         .context("import error")?;
 
+        // 将db数据保存
         db.save()
     }
 }
@@ -62,13 +64,19 @@ fn from_autojump<'a>(db: &mut Database<'a>, buffer: &'a str) -> Result<()> {
 }
 
 fn from_z<'a>(db: &mut Database<'a>, buffer: &'a str) -> Result<()> {
+    // 多行导入
+    // last access epoch rank path
     for line in buffer.lines() {
         if line.is_empty() {
             continue;
         }
+        // 返回最多3列
+        // 返回的是一个迭代器
         let mut split = line.rsplitn(3, '|');
 
+        // 返回下一个Option
         let last_accessed = split.next().with_context(|| format!("invalid entry: {}", line))?;
+        //  访问时间
         let last_accessed =
             last_accessed.parse().with_context(|| format!("invalid epoch: {}", last_accessed))?;
 
@@ -77,11 +85,13 @@ fn from_z<'a>(db: &mut Database<'a>, buffer: &'a str) -> Result<()> {
 
         let path = split.next().with_context(|| format!("invalid entry: {}", line))?;
 
+        // 初始化一个Dir
         db.dirs.push(Dir { path: path.into(), rank, last_accessed });
         db.modified = true;
     }
 
     if db.modified {
+        // 删除重复的路径
         db.dedup();
     }
 

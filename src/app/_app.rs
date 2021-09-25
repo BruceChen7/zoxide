@@ -2,6 +2,7 @@ use clap::{AppSettings, ArgEnum, Clap, ValueHint};
 
 use std::path::PathBuf;
 
+// 环境变量help
 const ENV_HELP: &str = "ENVIRONMENT VARIABLES:
     _ZO_DATA_DIR            Path for zoxide data files
     _ZO_ECHO                Prints the matched directory before navigating to it when set to 1
@@ -10,6 +11,7 @@ const ENV_HELP: &str = "ENVIRONMENT VARIABLES:
     _ZO_MAXAGE              Maximum total age after which entries start getting deleted
     _ZO_RESOLVE_SYMLINKS    Resolve symlinks when storing paths";
 
+// author about 读的是cargo.toml的信息
 #[derive(Debug, Clap)]
 #[clap(
     bin_name = env!("CARGO_PKG_NAME"),
@@ -32,6 +34,7 @@ pub enum App {
 }
 
 /// Add a new directory or increment its rank
+/// 添加子命令
 #[derive(Clap, Debug)]
 pub struct Add {
     #[clap(min_values = 1, required = true, value_hint = ValueHint::DirPath)]
@@ -39,6 +42,7 @@ pub struct Add {
 }
 
 /// Import entries from another application
+// 添加import子命令
 #[derive(Clap, Debug)]
 pub struct Import {
     #[clap(value_hint = ValueHint::FilePath)]
@@ -60,6 +64,7 @@ pub enum ImportFrom {
 }
 
 /// Generate shell configuration
+///  添加import子命令
 #[derive(Clap, Debug)]
 pub struct Init {
     #[clap(arg_enum)]

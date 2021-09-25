@@ -22,9 +22,9 @@ edit:completion:arg-completer[zoxide] = [@words]{
             cand --help 'Print help information'
             cand -V 'Print version information'
             cand --version 'Print version information'
-            cand add 'Add a new directory or increment its rank'
+            cand add 'Add a new directory or increment its rank 添加子命令'
             cand import 'Import entries from another application'
-            cand init 'Generate shell configuration'
+            cand init 'Generate shell configuration 添加import子命令'
             cand query 'Search for a directory in the database'
             cand remove 'Remove a directory from the database'
         }

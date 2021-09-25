@@ -1,8 +1,8 @@
 complete -c zoxide -n "__fish_use_subcommand" -s h -l help -d 'Print help information'
 complete -c zoxide -n "__fish_use_subcommand" -s V -l version -d 'Print version information'
-complete -c zoxide -n "__fish_use_subcommand" -f -a "add" -d 'Add a new directory or increment its rank'
+complete -c zoxide -n "__fish_use_subcommand" -f -a "add" -d 'Add a new directory or increment its rank 添加子命令'
 complete -c zoxide -n "__fish_use_subcommand" -f -a "import" -d 'Import entries from another application'
-complete -c zoxide -n "__fish_use_subcommand" -f -a "init" -d 'Generate shell configuration'
+complete -c zoxide -n "__fish_use_subcommand" -f -a "init" -d 'Generate shell configuration 添加import子命令'
 complete -c zoxide -n "__fish_use_subcommand" -f -a "query" -d 'Search for a directory in the database'
 complete -c zoxide -n "__fish_use_subcommand" -f -a "remove" -d 'Remove a directory from the database'
 complete -c zoxide -n "__fish_seen_subcommand_from add" -r -f -a "(__fish_complete_directories)"

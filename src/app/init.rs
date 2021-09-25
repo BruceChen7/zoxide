@@ -8,6 +8,7 @@ use askama::Template;
 
 use std::io::{self, Write};
 
+// shell初始化
 impl Run for Init {
     fn run(&self) -> Result<()> {
         let cmd = if self.no_aliases { None } else { Some(self.cmd.as_str()) };
@@ -15,6 +16,7 @@ impl Run for Init {
         let echo = config::echo();
         let resolve_symlinks = config::resolve_symlinks();
 
+        // 初始化选项
         let opts = &Opts { cmd, hook: self.hook, echo, resolve_symlinks };
 
         let source = match self.shell {

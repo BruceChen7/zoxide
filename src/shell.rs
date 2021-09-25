@@ -23,6 +23,7 @@ macro_rules! make_template {
     };
 }
 
+// 宏定义
 make_template!(Bash, "bash.txt");
 make_template!(Elvish, "elvish.txt");
 make_template!(Fish, "fish.txt");

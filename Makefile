@@ -8,6 +8,10 @@ else
 	NIX := true
 endif
 
+$(info $$OS = "${OS}")
+$(info $$NIX = "${NIX}")
+$(info $$CI= "${CI}")
+
 .PHONY: build clean install test uninstall
 
 build:

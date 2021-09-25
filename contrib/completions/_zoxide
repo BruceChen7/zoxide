@@ -96,9 +96,9 @@ esac
 (( $+functions[_zoxide_commands] )) ||
 _zoxide_commands() {
     local commands; commands=(
-'add:Add a new directory or increment its rank' \
+'add:Add a new directory or increment its rank 添加子命令' \
 'import:Import entries from another application' \
-'init:Generate shell configuration' \
+'init:Generate shell configuration 添加import子命令' \
 'query:Search for a directory in the database' \
 'remove:Remove a directory from the database' \
     )

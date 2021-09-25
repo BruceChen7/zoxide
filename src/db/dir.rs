@@ -96,6 +96,8 @@ impl<'a> From<Vec<Dir<'a>>> for DirList<'a> {
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Dir<'a> {
     #[serde(borrow)]
+    // path
+    // Copy On write的智能指针，适用于读多写少
     pub path: Cow<'a, str>,
     pub rank: Rank,
     pub last_accessed: Epoch,

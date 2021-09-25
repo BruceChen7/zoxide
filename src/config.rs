@@ -58,6 +58,7 @@ pub fn exclude_dirs() -> Result<Vec<Pattern>> {
     }
 }
 
+// 根据平台
 pub fn fzf_opts() -> Option<OsString> {
     // 获取
     env::var_os("_ZO_FZF_OPTS")
