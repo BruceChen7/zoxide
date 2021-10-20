@@ -78,6 +78,7 @@ pub fn maxage() -> Result<Rank> {
 }
 
 pub fn resolve_symlinks() -> bool {
+    // 是否返回符号变量
     match env::var_os("_ZO_RESOLVE_SYMLINKS") {
         Some(var) => var == "1",
         None => false,

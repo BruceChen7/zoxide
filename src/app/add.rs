@@ -22,19 +22,25 @@ impl Run for Add {
         let mut db = DatabaseFile::new(data_dir);
         let mut db = db.open()?;
 
+        // 迭代
         for path in self.paths.iter() {
+            // 解决符号链接
             let path = if config::resolve_symlinks() {
                 util::canonicalize(path)
             } else {
                 util::resolve_path(path)
             }?;
+            // 转成相关的path
             let path = util::path_to_str(&path)?;
 
             // Ignore path if it contains unsupported characters, or if it's in
             // the exclude list.
+            // 忽略相关的路径
+            // 忽略相关的目录
             if path.contains(EXCLUDE_CHARS) || exclude_dirs.iter().any(|glob| glob.matches(path)) {
                 continue;
             }
+            // 如果不是目录
             if !Path::new(path).is_dir() {
                 bail!("not a directory: {}", path);
             }

@@ -9,6 +9,7 @@ use std::fs;
 impl Run for Import {
     fn run(&self) -> Result<()> {
         let buffer = fs::read_to_string(&self.path).with_context(|| {
+            // 导入路径
             format!("could not open database for importing: {}", &self.path.display())
         })?;
 

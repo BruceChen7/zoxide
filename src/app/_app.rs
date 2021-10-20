@@ -33,11 +33,13 @@ pub enum App {
     Remove(Remove),
 }
 
+// 通过注释，获取子命令help内容
 /// Add a new directory or increment its rank
 /// 添加子命令
 #[derive(Clap, Debug)]
 pub struct Add {
     #[clap(min_values = 1, required = true, value_hint = ValueHint::DirPath)]
+    // 用来添加路径
     pub paths: Vec<PathBuf>,
 }
 

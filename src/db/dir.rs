@@ -13,13 +13,15 @@ impl DirList<'_> {
     const VERSION: u32 = 3;
 
     pub fn new() -> DirList<'static> {
+        // DirList 列表
         DirList(Vec::new())
     }
 
     pub fn from_bytes(bytes: &[u8]) -> Result<DirList> {
         // Assume a maximum size for the database. This prevents bincode from
         // throwing strange errors when it encounters invalid data.
-        const MAX_SIZE: u64 = 32 << 20; // 32 MiB
+        // 32 MiB
+        const MAX_SIZE: u64 = 32 << 20;
         // 反序列化
         let deserializer = &mut bincode::options().with_fixint_encoding().with_limit(MAX_SIZE);
 
