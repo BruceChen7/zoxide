@@ -71,11 +71,11 @@ impl DirList<'_> {
     }
 }
 
-// 实现解引用 trait
+// 实现解引用trait
 impl<'a> Deref for DirList<'a> {
     type Target = Vec<Dir<'a>>;
 
-    // 静态类型
+    // 强制解引用
     fn deref(&self) -> &Self::Target {
         // 返回可读引用
         &self.0
@@ -179,10 +179,14 @@ mod tests {
     fn zero_copy() {
         let dirs = DirList(vec![Dir { path: "/".into(), rank: 0.0, last_accessed: 0 }]);
 
+        // 序列化后的结果
         let bytes = dirs.to_bytes().unwrap();
+        // 获取多个目录
         let dirs = DirList::from_bytes(&bytes).unwrap();
 
+        // 因为Dir实现Deref trait
         for dir in dirs.iter() {
+            // 检查里面的PATH都是引用
             assert!(matches!(dir.path, Cow::Borrowed(_)))
         }
     }

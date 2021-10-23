@@ -9,6 +9,7 @@ pub struct SilentExit {
     pub code: i32,
 }
 
+// 实现display trait
 impl Display for SilentExit {
     fn fmt(&self, _: &mut Formatter) -> fmt::Result {
         // 啥都不返回
